@@ -22,9 +22,10 @@ This is draft only. UWP Library seems to be not completed. No samples... so.. so
 
 ## Referencies
 
-- [https://github.com/pingzing](Neil McAlister (pingzing))
+- [https://github.com/pingzing](Neil McAlister)
 - [https://github.com/AvaloniaUI/](https://github.com/AvaloniaUI/)
 - [https://github.com/pingzing/avalonia-uwp-fork](avalonia-uwp-fork) 
+- [Gitter Discussion](https://gitter.im/AvaloniaUI/Avalonia?at=59cd68ff614889d4754ff3c7)
 
 ## ..
 
