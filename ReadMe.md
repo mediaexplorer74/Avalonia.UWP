@@ -11,8 +11,8 @@ This is draft only. UWP Library seems to be not completed. No samples... so.. so
 
 ## 2 super-crazy ideas from [m][e] 
 
-- XBOX UWP apps
-- ARM64 UWP aps, hehe (not for W10M... but... who knows if you get early builds of avalonia 0.5...)
+- "Avalonia Engine"-based XBOX UWP apps
+- "Avalonia Engine"-based ARM64 UWP apps, hehe (not for W10M... but... who knows if you get early builds of Avaloniaui 0.5...)
 
 ## Words of the author
 
