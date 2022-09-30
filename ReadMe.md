@@ -20,11 +20,24 @@ This is draft only. UWP Library seems to be not completed. No samples... so.. so
 - Neil McAlister
 
 
+## Current status / Plan for future experiments
+
+Experimenting with a theoretical UWP target for Avalonia, and have some thoughts: 
+
+UWP can support .NET Standard from 1.4 to 2.0. Is it worth restricting core components to 1.4 for some time just for that? 
+
+The iOS and Android backends are hosted on an AppDelegate and a MainActivity, respectively. 
+
+The UWP equivalent to this would be an Application. 
+
+What if I RnD old commints of Avalonia... idk :)
+
+
 ## Referencies
 
-- [https://github.com/pingzing](Neil McAlister)
-- [https://github.com/AvaloniaUI/](https://github.com/AvaloniaUI/)
-- [https://github.com/pingzing/avalonia-uwp-fork](avalonia-uwp-fork) 
+- [Neil McAlister](https://github.com/pingzing)
+- [AvaloniaUI](https://github.com/AvaloniaUI/)
+- [pingzing's avalonia-uwp-fork](avalonia-uwp-fork) 
 - [Gitter Discussion](https://gitter.im/AvaloniaUI/Avalonia?at=59cd68ff614889d4754ff3c7)
 
 ## ..
