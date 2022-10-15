@@ -9,15 +9,17 @@ namespace Avalonia.UWP
     {
         public Task<string[]> ShowFileDialogAsync(FileDialog dialog, IWindowImpl parent)
         {
-            //
-            throw new System.NotImplementedException();
+            // not ready
+            //throw new System.NotImplementedException();
+            return default;
         }
 
         public Task<string> ShowFolderDialogAsync(OpenFolderDialog dialog, 
             IWindowImpl parent)
         {
-            //
-            throw new System.NotImplementedException();
+            // not ready
+            //throw new System.NotImplementedException();
+            return default;
         }
     }
 }

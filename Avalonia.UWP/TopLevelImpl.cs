@@ -32,41 +32,95 @@ namespace Avalonia.UWP
 
             public void Initialize(CoreApplicationView applicationView)
             {
-                throw new NotImplementedException();
+                // not ready
+
+                //throw new NotImplementedException();
             }
 
             public void SetWindow(CoreWindow window)
             {
-                throw new NotImplementedException();
+                // not ready
+                //throw new NotImplementedException();
             }
 
             public void Load(string entryPoint)
             {
-                throw new NotImplementedException();
+                // not ready
+                //throw new NotImplementedException();
             }
 
             public void Run()
             {
-                throw new NotImplementedException();
+                // not ready
+                //throw new NotImplementedException();
             }
 
             public void Uninitialize()
+            {
+                // not ready
+                //throw new NotImplementedException();
+            }
+        }
+
+        public Size ClientSize
+        {
+            get
             {
                 throw new NotImplementedException();
             }
         }
 
-        public Size ClientSize => throw new NotImplementedException();
+        public double Scaling
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
 
-        public double Scaling => throw new NotImplementedException();
+        public IEnumerable<object> Surfaces
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
 
-        public IEnumerable<object> Surfaces => throw new NotImplementedException();
+        public Action<RawInputEventArgs> Input
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
 
-        public Action<RawInputEventArgs> Input { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public Action<Rect> Paint { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public Action<Size> Resized { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public Action<double> ScalingChanged { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public Action Closed { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+        public Action<Rect> Paint 
+        { 
+            get => throw new NotImplementedException(); 
+            set => throw new NotImplementedException(); 
+        }
+
+        public Action<Size> Resized 
+        { 
+            get => throw new NotImplementedException(); 
+            set => throw new NotImplementedException(); 
+        }
+        
+        public Action<double> ScalingChanged 
+        { 
+            get => throw new NotImplementedException(); 
+            set => throw new NotImplementedException(); 
+        }
+        
+        public Action Closed 
+        { 
+            get => throw new NotImplementedException(); 
+            set => throw new NotImplementedException(); 
+        }
 
         public void Dispose()
         {

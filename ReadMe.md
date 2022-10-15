@@ -5,7 +5,7 @@ Experimental UWP implementation for Avalonia.
 
 ## About
 
-I forked this [https://github.com/pingzing/avalonia-uwp-fork](avalonia-uwp-fork) project.
+I forked this [Pingzing's Avalonia-uwp-fork](https://github.com/pingzing/avalonia-uwp-fork) project.
 
 This is draft only. UWP Library seems to be not completed. No samples... so.. sorry. As is.
 
@@ -30,14 +30,14 @@ The iOS and Android backends are hosted on an AppDelegate and a MainActivity, re
 
 The UWP equivalent to this would be an Application. 
 
-What if I RnD old commints of Avalonia... idk :)
+What if I RnD old commits of Avalonia... idk ^ ^
 
 
 ## Referencies
 
 - [Neil McAlister](https://github.com/pingzing)
-- [AvaloniaUI](https://github.com/AvaloniaUI/)
-- [pingzing's avalonia-uwp-fork](avalonia-uwp-fork) 
+- [AvaloniaUI](https://github.com/AvaloniaUI)
+- [pingzing's avalonia-uwp-fork](https://github.com/pingzing/avalonia-uwp-fork) 
 - [Gitter Discussion](https://gitter.im/AvaloniaUI/Avalonia?at=59cd68ff614889d4754ff3c7)
 
 ## ..

@@ -12,7 +12,7 @@ namespace Avalonia.UWP
     {
         public UWPWindowImpl()
         {
-            
+            //
         }
 
         public Size ClientSize { get; set; }
@@ -40,32 +40,32 @@ namespace Avalonia.UWP
 
         public void Activate()
         {
-            
+            //
         }
 
         public void BeginMoveDrag()
         {
-            
+           // 
         }
 
         public void BeginResizeDrag(WindowEdge edge)
         {
-            
+            //
         }
 
         public void Dispose()
         {
-            
+            //
         }
 
         public void Hide()
         {
-            
+           // 
         }
 
         public void Invalidate(Rect rect)
         {
-            
+            //
         }
 
         public Point PointToClient(Point point)
@@ -80,37 +80,37 @@ namespace Avalonia.UWP
 
         public void Resize(Size clientSize)
         {
-            
+            //
         }
 
         public void SetCursor(IPlatformHandle cursor)
         {
-            
+           // 
         }
 
         public void SetIcon(IWindowIconImpl icon)
         {
-          
+          //
         }
 
         public void SetInputRoot(IInputRoot inputRoot)
         {
-           
+           //
         }
 
         public void SetSystemDecorations(bool enabled)
         {
-           
+           //
         }
 
         public void SetTitle(string title)
         {
-           
+           //
         }
 
         public void Show()
         {
-           
+           //
         }
 
         public IDisposable ShowDialog()
