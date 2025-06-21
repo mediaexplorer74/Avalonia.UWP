@@ -1,9 +1,0 @@
-<Page
-    x:Class="AvaloniaApp.MainPage"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:AvaloniaApp">
-    <Grid>
-        <SwapChainPanel x:Name="AvaloniaHost"/>
-    </Grid>
-</Page>

@@ -1,4 +1,4 @@
-# AvaloniaUWP 0.6-alpha - main branch
+# AvaloniaUWP 0.6.2-alpha - main branch
 
 ![](Images/logo.png)
 
@@ -14,8 +14,20 @@ I forked this [Pingzing's Avalonia-uwp-fork](https://github.com/pingzing/avaloni
 ![](Images/sshot02.png)
 
 ## Current status / Plan for future experiments
+- This is draft only…. but , in 2025, I "touched" all code with WindSurf AI in hope to improve AvaloniaUWPLib and Sample.. =)
+## Features
+- AXAML parser (only MinimalWindow.axml at now):
 
-This is draft only…. but , in 2025, I "touched" all code with WindSurf AI in hope to improve AvaloniaUWPLib and Sample.. =)
+Supports: Window, Grid, Canvas, Rectangle, Ellipse, Line, StackPanel, Button, TextBlock.
+
+Handles basic attributes (size, color, position, text, etc).
+
+Ignores unknown elements gracefully.
+
+Limitations:
+
+No support for advanced XAML features (bindings, resources, styles, events).
+Only basic color names are supported (extend ParseColor as needed).
 
 
 ## TODO

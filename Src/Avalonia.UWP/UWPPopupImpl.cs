@@ -15,6 +15,11 @@ namespace Avalonia.UWP
 {
     public class UWPPopupImpl : IPopupImpl // Avalonia 0.6.0-compatible
     {
+        public double Width;
+        public double Height;
+        public string Title;
+        public Control Content;
+
         public void Dispose()
         {
             // Dispose of any UWP resources if needed (none for stub)

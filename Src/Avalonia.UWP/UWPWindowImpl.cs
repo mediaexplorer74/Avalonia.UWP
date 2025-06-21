@@ -1,12 +1,14 @@
-using Avalonia.Platform;
 using System;
 using System.Collections.Generic;
 using Avalonia.Input;
 using Avalonia.Controls;
 using System.Reactive.Disposables;
-using Avalonia.Input.Raw;
+
 using SkiaSharp;
 using SkiaSharp.Views.UWP;
+
+using Avalonia.Platform;
+using Avalonia.Input.Raw;
 using Avalonia.Skia;
 using Avalonia.Rendering;
 using Windows.System;
@@ -64,51 +66,24 @@ namespace Avalonia.UWP
             _hostPanel.KeyUp += HostPanel_KeyUp;
         }
 
-        private void SkiaPanel_PaintSurface(object sender, SKPaintGLSurfaceEventArgs e)
+      
+
+        // Fields for Avalonia rendering integration
+        private IRenderRoot _renderRoot;
+        //private ISkiaGpuRenderTarget /*IRenderTarget*/ _skiaRenderTarget;
+        public double Width;
+        public double Height;
+        public string Title;
+        public Control Content;
+
+
+        // SkiaSharp PaintSurface event handler
+        public virtual void SkiaPanel_PaintSurface(object sender, SKPaintGLSurfaceEventArgs e)
         {
             // Stub: No-op for GL surface paint (not used in UWP scenario)
         }
 
-        // Fields for Avalonia rendering integration
-        private IRenderRoot _renderRoot;
-        private /*ISkiaGpuRenderTarget*/ IRenderTarget _skiaRenderTarget;
-
-        // SkiaSharp PaintSurface event handler
-        private void SkiaPanel_PaintSurface(object sender, SkiaSharp.Views.UWP.SKPaintSurfaceEventArgs e)
-        {
-            var canvas = e.Surface.Canvas;
-            canvas.Clear(SkiaSharp.SKColors.White);
-
-            // --- SkiaSharp Sample Drawing ---
-            // Always draw a red rectangle and a green rectangle below it for the sample scenario
-            using (var redPaint = new SkiaSharp.SKPaint { Color = SkiaSharp.SKColors.Red, Style = SkiaSharp.SKPaintStyle.Fill })
-            {
-                canvas.DrawRect(new SkiaSharp.SKRect(50, 50, 200, 150), redPaint);
-            }
-            using (var greenPaint = new SkiaSharp.SKPaint { Color = SkiaSharp.SKColors.Green, Style = SkiaSharp.SKPaintStyle.Fill })
-            {
-                canvas.DrawRect(new SkiaSharp.SKRect(50, 210, 200, 150), greenPaint);
-            }
-
-            // --- Avalonia Rendering Integration ---
-            // If the Avalonia visual tree root is set, render it using Avalonia's immediate renderer
-            if (_renderRoot != null)
-            {
-                // Create a Skia drawing context for Avalonia
-                using (var drawingContext = new SkiaDrawingContext(
-                    e.Surface,
-                    e.Surface.Canvas,
-                    e.Info.Width,
-                    e.Info.Height,
-                    e.Info.ColorType,
-                    e.Info.AlphaType,
-                    e.Info.ColorSpace))
-                {
-                    var renderer = new Avalonia.Rendering.Renderer(_renderRoot, Avalonia.Rendering.RenderLoopPriority.High);
-                    renderer.Paint(drawingContext);
-                }
-            }
-        }
+      
 
         // Helper method to map UWP modifiers to Avalonia InputModifiers (0.5.1)
         private InputModifiers GetModifiers()
@@ -325,6 +300,7 @@ namespace Avalonia.UWP
             // Stub: Not supported for UWP
         }
 
+        // setting input root for UWP
         public void SetInputRoot(IInputRoot inputRoot)
         {
             // Store the Avalonia visual tree root for rendering
@@ -367,5 +343,7 @@ namespace Avalonia.UWP
             //TODO: Implement renderer creation for UWP
             return default;
         }
+
+       
     }
 }

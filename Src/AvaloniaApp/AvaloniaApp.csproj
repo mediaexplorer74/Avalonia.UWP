@@ -124,6 +124,7 @@
     </Compile>
     <Compile Include="MinimalWindow.axaml.cs">
       <DependentUpon>MinimalWindow.axaml</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -144,6 +145,7 @@
     <None Include="MinimalWindow.axaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -205,6 +207,9 @@
       <Version>6.0.8</Version>
     </PackageReference>
     <PackageReference Include="Avalonia" Version="0.6.0" />
+    <PackageReference Include="Avalonia.Skia" Version="0.6.0" />
+    <PackageReference Include="SkiaSharp" Version="2.88.0" />
+    <PackageReference Include="SkiaSharp.Views" Version="2.88.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Avalonia.UWP\AvaloniaUWPLib.csproj">
