@@ -8,7 +8,7 @@ using Windows.Storage.Pickers;
 
 namespace Avalonia.UWP
 {
-    internal class SystemDialogImpl : ISystemDialogImpl
+    internal class SystemDialogImpl : ISystemDialogImpl // Avalonia 0.6.0-compatible
     {
         public async Task<string[]> ShowFileDialogAsync(FileDialog dialog, IWindowImpl parent)
         {

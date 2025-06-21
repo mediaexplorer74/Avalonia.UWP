@@ -1,0 +1,17 @@
+using Windows.UI.Xaml.Controls;
+
+namespace AvaloniaApp
+{
+    public sealed partial class MainPage : Page
+    {
+        public MainPage()
+        {
+            this.InitializeComponent();
+            // Set the UWP SwapChainPanel as the Avalonia host
+            Avalonia.UWP.WindowingPlatformImpl.HostPanel = this.AvaloniaHost;
+            // Launch the Avalonia window (MinimalWindow.axaml)
+            var win = new AvaloniaApp.MinimalWindow();
+            win.Show();
+        }
+    }
+}

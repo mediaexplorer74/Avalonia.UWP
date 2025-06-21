@@ -12,7 +12,7 @@
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.19041.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.15063.0</TargetPlatformMinVersion>
+    <TargetPlatformMinVersion>10.0.16299.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -104,13 +104,15 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Avalonia\UWP\Avalonia\Point.cs" />
+    <Compile Include="Avalonia\Rendering\Renderer.cs" />
+    <Compile Include="Avalonia\Rendering\RenderLoopPriority.cs" />
     <Compile Include="ClipboardImpl.cs" />
     <Compile Include="CursorFactoryImpl.cs" />
     <Compile Include="KeyboardDeviceImpl.cs" />
     <Compile Include="PlatformIconLoaderImpl.cs" />
     <Compile Include="PlatformThreadingInterfaceImpl.cs" />
     <Compile Include="RenderLoopImpl.cs" />
+    <Compile Include="SkiaDrawingContext.cs" />
     <Compile Include="SystemDialogImpl.cs" />
     <Compile Include="TopLevelImpl.cs" />
     <Compile Include="UWPPlatform.cs" />
@@ -122,15 +124,20 @@
     <EmbeddedResource Include="Properties\Avalonia.UWP.rd.xml" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Avalonia.Skia">
+      <Version>0.6.0</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.8</Version>
     </PackageReference>
     <PackageReference Include="Avalonia">
-      <Version>0.5.1</Version>
+      <Version>0.6.0</Version>
     </PackageReference>
-    <PackageReference Include="SkiaSharp">
-      <Version>2.88.9</Version>
-    </PackageReference>
+    <PackageReference Include="SkiaSharp" Version="2.88.0" />
+    <PackageReference Include="SkiaSharp.Views" Version="2.88.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Avalonia\UWP\Avalonia\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

@@ -1,11 +1,16 @@
 using Avalonia.Platform;
 using System;
 using System.Collections.Generic;
-using Avalonia.Input;  // Avalonia 0.5.1 uses InputModifiers, RawMouseEventType, RawMouseEventArgs, RawKeyEventType, RawKeyEventArgs (no Raw namespace)
+using Avalonia.Input;
 using Avalonia.Controls;
 using System.Reactive.Disposables;
 using Avalonia.Input.Raw;
 using SkiaSharp;
+using SkiaSharp.Views.UWP;
+using Avalonia.Skia;
+using Avalonia.Rendering;
+using Windows.System;
+// Avalonia 0.6.0: Ensure using Avalonia.Platform, Avalonia.Input.Raw, and Avalonia.Skia namespaces
 
 namespace Avalonia.UWP
 {
@@ -17,8 +22,8 @@ namespace Avalonia.UWP
         private SkiaSharp.Views.UWP.SKSwapChainPanel _skiaPanel;
         
         // Placeholder for SkiaSharp's GRContext, etc.
-        // private GRContext _skiaContext;
-        // private SwapChainPanelRenderTarget _renderTarget;
+        private GRContext _skiaContext;
+        //private SwapChainPanelRenderTarget _renderTarget;
 
         /// <summary>
         /// Minimal constructor for UWPWindowImpl. Accepts a SwapChainPanel as the rendering host.
@@ -59,9 +64,14 @@ namespace Avalonia.UWP
             _hostPanel.KeyUp += HostPanel_KeyUp;
         }
 
+        private void SkiaPanel_PaintSurface(object sender, SKPaintGLSurfaceEventArgs e)
+        {
+            // Stub: No-op for GL surface paint (not used in UWP scenario)
+        }
+
         // Fields for Avalonia rendering integration
-        private Avalonia.Rendering.IRenderRoot _renderRoot;
-        private Avalonia.Skia.ISkiaGpuRenderTarget _skiaRenderTarget;
+        private IRenderRoot _renderRoot;
+        private /*ISkiaGpuRenderTarget*/ IRenderTarget _skiaRenderTarget;
 
         // SkiaSharp PaintSurface event handler
         private void SkiaPanel_PaintSurface(object sender, SkiaSharp.Views.UWP.SKPaintSurfaceEventArgs e)
@@ -85,7 +95,7 @@ namespace Avalonia.UWP
             if (_renderRoot != null)
             {
                 // Create a Skia drawing context for Avalonia
-                using (var drawingContext = new Avalonia.Skia.SkiaDrawingContext(
+                using (var drawingContext = new SkiaDrawingContext(
                     e.Surface,
                     e.Surface.Canvas,
                     e.Info.Width,
@@ -105,11 +115,11 @@ namespace Avalonia.UWP
         {
             var w = Windows.UI.Core.CoreWindow.GetForCurrentThread();
             InputModifiers modifiers = InputModifiers.None;
-            if (w.GetAsyncKeyState(Windows.UI.Core.VirtualKey.Control).HasFlag(Windows.UI.Core.CoreVirtualKeyStates.Down))
+            if (w.GetAsyncKeyState(VirtualKey.Control).HasFlag(Windows.UI.Core.CoreVirtualKeyStates.Down))
                 modifiers |= InputModifiers.Control;
-            if (w.GetAsyncKeyState(Windows.UI.Core.VirtualKey.Shift).HasFlag(Windows.UI.Core.CoreVirtualKeyStates.Down))
+            if (w.GetAsyncKeyState(VirtualKey.Shift).HasFlag(Windows.UI.Core.CoreVirtualKeyStates.Down))
                 modifiers |= InputModifiers.Shift;
-            if (w.GetAsyncKeyState(Windows.UI.Core.VirtualKey.Menu).HasFlag(Windows.UI.Core.CoreVirtualKeyStates.Down))
+            if (w.GetAsyncKeyState(VirtualKey.Menu).HasFlag(Windows.UI.Core.CoreVirtualKeyStates.Down))
                 modifiers |= InputModifiers.Alt;
             return modifiers;
         }
@@ -122,8 +132,8 @@ namespace Avalonia.UWP
             var modifiers = GetModifiers();
             var args = new RawMouseEventArgs(
                 null, // TODO: Provide IInputDevice
-                (ulong)point.PointerId,
-                _hostPanel,
+                (uint)point.PointerId,
+                default,//_hostPanel,
                 RawMouseEventType.LeftButtonDown,
                 position,
                 modifiers
@@ -139,8 +149,8 @@ namespace Avalonia.UWP
             var modifiers = GetModifiers();
             var args = new RawMouseEventArgs(
                 null, // TODO: Provide IInputDevice
-                (ulong)point.PointerId,
-                _hostPanel,
+                (uint)point.PointerId,
+                default,//_hostPanel,
                 RawMouseEventType.Move,
                 position,
                 modifiers
@@ -156,8 +166,8 @@ namespace Avalonia.UWP
             var modifiers = GetModifiers();
             var args = new RawMouseEventArgs(
                 null, // TODO: Provide IInputDevice
-                (ulong)point.PointerId,
-                _hostPanel,
+                (uint)point.PointerId,
+                default,//_hostPanel,
                 RawMouseEventType.LeftButtonUp,
                 position,
                 modifiers
@@ -171,7 +181,7 @@ namespace Avalonia.UWP
             var modifiers = GetModifiers();
             var args = new RawKeyEventArgs(
                 null, // TODO: Provide IKeyboardDevice
-                _hostPanel,
+                default,//_hostPanel,
                 RawKeyEventType.KeyDown,
                 (Key)e.Key, // Simplified mapping
                 modifiers
@@ -185,7 +195,7 @@ namespace Avalonia.UWP
             var modifiers = GetModifiers();
             var args = new RawKeyEventArgs(
                 null, // TODO: Provide IKeyboardDevice
-                _hostPanel,
+                default,//_hostPanel,
                 RawKeyEventType.KeyUp,
                 (Key)e.Key, // Simplified mapping
                 modifiers
@@ -229,38 +239,65 @@ namespace Avalonia.UWP
         public IPlatformHandle Handle { get; set; }
 
         public Size MaxClientSize { get; set; }
-        Action<RawInputEventArgs> ITopLevelImpl.Input { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        Action<RawInputEventArgs> ITopLevelImpl.Input
+        {
+            get
+            {
+                return default;
+            }
+
+            set
+            {
+                value = default;
+            }
+        }
+
+        public IScreenImpl Screen
+        {
+            get
+            {
+                return default;
+            }
+        }
+
+        public IMouseDevice MouseDevice
+        {
+            get
+            {
+                return default;
+            }
+        }
 
         public event Action LostFocus;
 
         public void Activate()
         {
-            //
+            // Stub: Not needed for UWP
         }
 
         public void BeginMoveDrag()
         {
-           // 
+            // Stub: Not supported on UWP
         }
 
         public void BeginResizeDrag(WindowEdge edge)
         {
-            //
+            // Stub: Not supported on UWP
         }
 
         public void Dispose()
         {
-            //
+            // Stub: Dispose UWP resources if needed (none for now)
         }
 
         public void Hide()
         {
-           // 
+            // Stub: Hide window (not needed for UWP)
         }
 
         public void Invalidate(Rect rect)
         {
-            //
+            // Stub: No-op for UWP
         }
 
         public Point PointToClient(Point point)
@@ -275,17 +312,17 @@ namespace Avalonia.UWP
 
         public void Resize(Size clientSize)
         {
-            //
+            // Stub: Not supported for UWP
         }
 
         public void SetCursor(IPlatformHandle cursor)
         {
-           // 
+            // Stub: Not supported for UWP
         }
 
         public void SetIcon(IWindowIconImpl icon)
         {
-          //
+            // Stub: Not supported for UWP
         }
 
         public void SetInputRoot(IInputRoot inputRoot)
@@ -298,12 +335,12 @@ namespace Avalonia.UWP
 
         public void SetSystemDecorations(bool enabled)
         {
-           //
+            // Stub: Not supported for UWP
         }
 
         public void SetTitle(string title)
         {
-           //
+            // Stub: Not supported for UWP
         }
 
         public void Show()
@@ -318,6 +355,17 @@ namespace Avalonia.UWP
         public IDisposable ShowDialog()
         {
             return Disposable.Empty;
+        }
+
+        public void ShowTaskbarIcon(bool value)
+        {
+            //TODO: Implement taskbar icon visibility (not needed for UWP)
+        }
+
+        public IRenderer CreateRenderer(IRenderRoot root)
+        {
+            //TODO: Implement renderer creation for UWP
+            return default;
         }
     }
 }

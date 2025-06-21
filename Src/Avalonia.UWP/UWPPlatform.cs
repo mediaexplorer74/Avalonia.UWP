@@ -1,4 +1,4 @@
-﻿using Avalonia.Controls.Platform;
+using Avalonia.Controls.Platform;
 using Avalonia.Input;
 using Avalonia.Input.Platform;
 using Avalonia.Platform;
@@ -15,7 +15,7 @@ namespace Avalonia.UWP
     // Only NECESSARY things are IPlatformThreadingInterface and ITopLevel impl (and IWindowImpl on top)
     // Start with stubs for most of these--copy paste the stubs from https://github.com/AvaloniaUI/Avalonia/tree/d7e74229990205b1865586f44c65fb7571ba0d0e/src/Avalonia.DesignerSupport/Remote
 
-    public class UWPPlatform
+    public class UWPPlatform // Avalonia 0.6.0-compatible
     {                
         public static void Initialize()
         {

@@ -1,4 +1,4 @@
-# AvaloniaUWP 0.5-alpha - main branch
+# AvaloniaUWP 0.6-alpha - main branch
 
 ![](Images/logo.png)
 
@@ -9,15 +9,20 @@ Experimental UWP implementation for Avalonia.
 
 I forked this [Pingzing's Avalonia-uwp-fork](https://github.com/pingzing/avalonia-uwp-fork) project.
 
-
+## Screenshots
+![](Images/sshot01.png)
+![](Images/sshot02.png)
 
 ## Current status / Plan for future experiments
 
 This is draft only…. but , in 2025, I "touched" all code with WindSurf AI in hope to improve AvaloniaUWPLib and Sample.. =)
 
 
-## Referencies
+## TODO
+- Dream on some "AXAML" parser / visualider / loader… idk ...
+- Todo some minimal working proto (ckick counter?)
 
+## Referencies
 - [Neil McAlister](https://github.com/pingzing)
 - [AvaloniaUI](https://github.com/AvaloniaUI)
 - [pingzing's avalonia-uwp-fork](https://github.com/pingzing/avalonia-uwp-fork) 

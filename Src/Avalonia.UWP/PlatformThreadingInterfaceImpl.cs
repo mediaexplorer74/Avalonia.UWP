@@ -8,7 +8,7 @@ using System.Reactive.Disposables;
 
 namespace Avalonia.UWP
 {
-    internal class PlatformThreadingInterfaceImpl : IPlatformThreadingInterface
+    internal class PlatformThreadingInterfaceImpl : IPlatformThreadingInterface // Avalonia 0.6.0-compatible
     {
         private bool _signaled;
 
@@ -22,6 +22,19 @@ namespace Avalonia.UWP
         }
 
         public event Action Signaled;
+
+        event Action<Threading.DispatcherPriority?> IPlatformThreadingInterface.Signaled
+        {
+            add
+            {
+                value = default;
+            }
+
+            remove
+            {
+                value = default;
+            }
+        }
 
         // UWP manages its own event loop, so this is a no-op
         public void RunLoop(CancellationToken cancellationToken)
@@ -54,6 +67,11 @@ namespace Avalonia.UWP
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 
+        public void Signal(Threading.DispatcherPriority priority)
+        {
+            throw new NotImplementedException();
+        }
+
         // Starts a timer that ticks on the UI thread
         public IDisposable StartTimer(TimeSpan interval, Action tick)
         {
@@ -65,6 +83,11 @@ namespace Avalonia.UWP
             };
             timer.Start();
             return Disposable.Create(timer.Stop);
+        }
+
+        public IDisposable StartTimer(Threading.DispatcherPriority priority, TimeSpan interval, Action tick)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -3,7 +3,7 @@ using Avalonia.Rendering;
 
 namespace Avalonia.UWP
 {
-    internal class RenderLoopImpl : IRenderLoop
+    internal class RenderLoopImpl : IRenderLoop // Avalonia 0.6.0-compatible
     {
         private Windows.UI.Xaml.DispatcherTimer _timer;
         public event EventHandler<EventArgs> Tick;

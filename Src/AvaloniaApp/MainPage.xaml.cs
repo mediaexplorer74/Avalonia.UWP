@@ -1,32 +1,21 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
-
 
 namespace AvaloniaApp
 {
     public sealed partial class MainPage : Page
     {
+        
         public MainPage()
         {
             this.InitializeComponent();
 
-            // Wire up Avalonia backend with the SwapChainPanel host
+           
+            // Wire up Avalonia backend with the SwapChainPanel host:
+            // Create and show a minimal Avalonia window to test the pipeline:
+            // Set the UWP SwapChainPanel as the Avalonia host
             Avalonia.UWP.WindowingPlatformImpl.HostPanel = this.AvaloniaHost;
-
-            // Create and show a minimal Avalonia window to test the pipeline.
-            var win = new AvaloniaApp.MinimalWindow();
+            // Launch the Avalonia window (MinimalWindow.axaml)
+            MinimalWindow win = new AvaloniaApp.MinimalWindow();
             win.Show();
 
             InitializeAvaloniaHost();

@@ -3,7 +3,7 @@ using Avalonia.Platform;
 
 namespace Avalonia.UWP
 {
-    public class PlatformIconLoaderImpl : IPlatformIconLoader
+    public class PlatformIconLoaderImpl : IPlatformIconLoader // Avalonia 0.6.0-compatible
     {
        public class IconStub : IWindowIconImpl
         {

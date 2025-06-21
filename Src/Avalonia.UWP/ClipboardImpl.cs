@@ -5,7 +5,7 @@ using Windows.ApplicationModel.DataTransfer;
 
 namespace Avalonia.UWP
 {
-    public class ClipboardImpl : IClipboard
+    public class ClipboardImpl : IClipboard // Avalonia 0.6.0-compatible
     {
         public Task<string> GetTextAsync()
         {

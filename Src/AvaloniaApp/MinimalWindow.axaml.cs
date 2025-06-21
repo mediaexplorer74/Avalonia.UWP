@@ -1,16 +1,18 @@
 using Avalonia.Controls;
+using Avalonia.Markup.Xaml;
+using System;
 
 namespace AvaloniaApp
 {
-    public partial class MinimalWindow : Window
+    public partial class MinimalWindow : Avalonia.Controls.Window
     {
         private int _counter = 0;
         public MinimalWindow()
         {
             InitializeComponent();
             // Wire up the button click event (Avalonia 0.5.1 style)
-            var button = this.FindControl<Button>("CounterButton");
-            var text = this.FindControl<TextBlock>("CounterText");
+            Button button = this.FindControl<Button>("CounterButton");
+            TextBlock text = this.FindControl<TextBlock>("CounterText");
             if (button != null && text != null)
             {
                 button.Click += (sender, e) =>
@@ -19,6 +21,11 @@ namespace AvaloniaApp
                     text.Text = "Count: " + _counter;
                 };
             }
+        }
+
+        private void InitializeComponent()
+        {
+            AvaloniaXamlLoader.Load(this);
         }
     }
 }

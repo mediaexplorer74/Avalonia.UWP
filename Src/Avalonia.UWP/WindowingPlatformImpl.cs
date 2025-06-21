@@ -4,7 +4,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace Avalonia.UWP
 {
-    internal class WindowingPlatformImpl : IWindowingPlatform
+    public class WindowingPlatformImpl : IWindowingPlatform // Avalonia 0.6.0-compatible
     {        
         /// <summary>
         /// Host panel to use for window creation. Set this from the app before creating windows.
