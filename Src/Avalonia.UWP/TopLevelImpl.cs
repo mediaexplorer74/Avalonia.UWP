@@ -1,4 +1,4 @@
-﻿using Avalonia.Controls.Platform.Surfaces;
+using Avalonia.Controls.Platform.Surfaces;
 using Avalonia.Platform;
 using System;
 using System.Collections.Generic;
@@ -32,9 +32,8 @@ namespace Avalonia.UWP
 
             public void Initialize(CoreApplicationView applicationView)
             {
-                // not ready
-
-                //throw new NotImplementedException();
+                // UWP: Initialize application view (not implemented in 0.5.1)
+                // TODO: Implement UWP window initialization.
             }
 
             public void SetWindow(CoreWindow window)

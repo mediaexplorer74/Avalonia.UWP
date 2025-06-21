@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using Avalonia.Platform;
 using Windows.UI.Core;
@@ -12,6 +12,7 @@ namespace Avalonia.UWP
     {
         private bool _signaled;
 
+        // Returns true if the current thread is the UI thread
         public bool CurrentThreadIsLoopThread
         {
             get
@@ -22,12 +23,13 @@ namespace Avalonia.UWP
 
         public event Action Signaled;
 
+        // UWP manages its own event loop, so this is a no-op
         public void RunLoop(CancellationToken cancellationToken)
         {
-            // We use the CoreDispatcher's event loop instead of our own RunLoop.
             return;
         }
 
+        // Signals the UI thread to process events
         public void Signal()
         {
             lock (this)
@@ -52,6 +54,7 @@ namespace Avalonia.UWP
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 
+        // Starts a timer that ticks on the UI thread
         public IDisposable StartTimer(TimeSpan interval, Action tick)
         {
             DispatcherTimer timer = new DispatcherTimer();

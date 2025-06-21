@@ -1,4 +1,4 @@
-﻿using Avalonia.Input;
+using Avalonia.Input;
 
 namespace Avalonia.UWP
 {
@@ -6,16 +6,13 @@ namespace Avalonia.UWP
     {
         public IInputElement FocusedElement
         {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
+            get;
+            private set;
         }
 
-        public void SetFocusedElement(IInputElement element, 
-            NavigationMethod method, InputModifiers modifiers)
+        public void SetFocusedElement(IInputElement element, NavigationMethod method, InputModifiers modifiers)
         {
-            throw new System.NotImplementedException();
+            FocusedElement = element;
         }
     }
 }

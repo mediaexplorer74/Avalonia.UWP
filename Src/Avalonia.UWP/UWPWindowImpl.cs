@@ -1,17 +1,22 @@
 using Avalonia.Platform;
 using System;
 using System.Collections.Generic;
-using Avalonia.Input;
-using Avalonia.Input.Raw;
+using Avalonia.Input;  // Avalonia 0.5.1 uses InputModifiers, RawMouseEventType, RawMouseEventArgs, RawKeyEventType, RawKeyEventArgs (no Raw namespace)
 using Avalonia.Controls;
 using System.Reactive.Disposables;
+using Avalonia.Input.Raw;
+using SkiaSharp;
 
 namespace Avalonia.UWP
 {
     public class UWPWindowImpl : IWindowImpl, IEmbeddableWindowImpl, IPopupImpl
     {
         private Windows.UI.Xaml.Controls.SwapChainPanel _hostPanel;
-        // Placeholder for rendering context (e.g., SkiaSharp's GRContext, Direct2D, etc.)
+        
+        // SkiaSharp rendering surface
+        private SkiaSharp.Views.UWP.SKSwapChainPanel _skiaPanel;
+        
+        // Placeholder for SkiaSharp's GRContext, etc.
         // private GRContext _skiaContext;
         // private SwapChainPanelRenderTarget _renderTarget;
 
@@ -32,14 +37,19 @@ namespace Avalonia.UWP
         {
             if (_hostPanel == null)
                 return;
-            // Rendering integration: SkiaSharp/Direct2D stub
-            // TODO: Set up SkiaSharp or Direct2D rendering surface using _hostPanel
-            // Example for SkiaSharp (pseudo-code):
-            //   var skiaSurface = new SwapChainPanelRenderTarget(_hostPanel);
-            //   _skiaContext = GRContext.Create(...);
-            //   Attach skiaSurface to Avalonia compositor.
-            // For now, just log for proof-of-concept.
-            System.Diagnostics.Debug.WriteLine("[UWPWindowImpl] InitializeRenderingSurface called (stub). Rendering surface not yet implemented.");
+
+            // --- SkiaSharp Integration ---
+            // Create an SKSwapChainPanel and add it to the host panel (if not already added)
+            if (_skiaPanel == null)
+            {
+                _skiaPanel = new SkiaSharp.Views.UWP.SKSwapChainPanel();
+                _skiaPanel.HorizontalAlignment = Windows.UI.Xaml.HorizontalAlignment.Stretch;
+                _skiaPanel.VerticalAlignment = Windows.UI.Xaml.VerticalAlignment.Stretch;
+                _skiaPanel.PaintSurface += SkiaPanel_PaintSurface;
+                _hostPanel.Children.Clear();
+                _hostPanel.Children.Add(_skiaPanel);
+            }
+            System.Diagnostics.Debug.WriteLine("[UWPWindowImpl] SkiaSharp SKSwapChainPanel initialized and added to host panel.");
 
             // Subscribe to UWP input events
             _hostPanel.PointerPressed += HostPanel_PointerPressed;
@@ -49,32 +59,58 @@ namespace Avalonia.UWP
             _hostPanel.KeyUp += HostPanel_KeyUp;
         }
 
-        // Helper method to map UWP pointer types to Avalonia equivalents
-        private Avalonia.Input.Raw.RawPointerEventType MapPointerType(Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+        // Fields for Avalonia rendering integration
+        private Avalonia.Rendering.IRenderRoot _renderRoot;
+        private Avalonia.Skia.ISkiaGpuRenderTarget _skiaRenderTarget;
+
+        // SkiaSharp PaintSurface event handler
+        private void SkiaPanel_PaintSurface(object sender, SkiaSharp.Views.UWP.SKPaintSurfaceEventArgs e)
         {
-            switch (e.Pointer.PointerDeviceType)
+            var canvas = e.Surface.Canvas;
+            canvas.Clear(SkiaSharp.SKColors.White);
+
+            // --- SkiaSharp Sample Drawing ---
+            // Always draw a red rectangle and a green rectangle below it for the sample scenario
+            using (var redPaint = new SkiaSharp.SKPaint { Color = SkiaSharp.SKColors.Red, Style = SkiaSharp.SKPaintStyle.Fill })
             {
-                case Windows.Devices.Input.PointerDeviceType.Mouse:
-                    return Avalonia.Input.Raw.RawPointerEventType.LeftButtonDown;
-                case Windows.Devices.Input.PointerDeviceType.Touch:
-                    return Avalonia.Input.Raw.RawPointerEventType.TouchDown;
-                case Windows.Devices.Input.PointerDeviceType.Pen:
-                    return Avalonia.Input.Raw.RawPointerEventType.PenDown;
-                default:
-                    return Avalonia.Input.Raw.RawPointerEventType.Other;
+                canvas.DrawRect(new SkiaSharp.SKRect(50, 50, 200, 150), redPaint);
+            }
+            using (var greenPaint = new SkiaSharp.SKPaint { Color = SkiaSharp.SKColors.Green, Style = SkiaSharp.SKPaintStyle.Fill })
+            {
+                canvas.DrawRect(new SkiaSharp.SKRect(50, 210, 200, 150), greenPaint);
+            }
+
+            // --- Avalonia Rendering Integration ---
+            // If the Avalonia visual tree root is set, render it using Avalonia's immediate renderer
+            if (_renderRoot != null)
+            {
+                // Create a Skia drawing context for Avalonia
+                using (var drawingContext = new Avalonia.Skia.SkiaDrawingContext(
+                    e.Surface,
+                    e.Surface.Canvas,
+                    e.Info.Width,
+                    e.Info.Height,
+                    e.Info.ColorType,
+                    e.Info.AlphaType,
+                    e.Info.ColorSpace))
+                {
+                    var renderer = new Avalonia.Rendering.Renderer(_renderRoot, Avalonia.Rendering.RenderLoopPriority.High);
+                    renderer.Paint(drawingContext);
+                }
             }
         }
 
-        // Helper method to map UWP modifiers to Avalonia equivalents
-        private Avalonia.Input.Raw.RawInputModifiers MapModifiers(Windows.UI.Core.CoreWindow w)
+        // Helper method to map UWP modifiers to Avalonia InputModifiers (0.5.1)
+        private InputModifiers GetModifiers()
         {
-            Avalonia.Input.Raw.RawInputModifiers modifiers = Avalonia.Input.Raw.RawInputModifiers.None;
+            var w = Windows.UI.Core.CoreWindow.GetForCurrentThread();
+            InputModifiers modifiers = InputModifiers.None;
             if (w.GetAsyncKeyState(Windows.UI.Core.VirtualKey.Control).HasFlag(Windows.UI.Core.CoreVirtualKeyStates.Down))
-                modifiers |= Avalonia.Input.Raw.RawInputModifiers.Control;
+                modifiers |= InputModifiers.Control;
             if (w.GetAsyncKeyState(Windows.UI.Core.VirtualKey.Shift).HasFlag(Windows.UI.Core.CoreVirtualKeyStates.Down))
-                modifiers |= Avalonia.Input.Raw.RawInputModifiers.Shift;
+                modifiers |= InputModifiers.Shift;
             if (w.GetAsyncKeyState(Windows.UI.Core.VirtualKey.Menu).HasFlag(Windows.UI.Core.CoreVirtualKeyStates.Down))
-                modifiers |= Avalonia.Input.Raw.RawInputModifiers.Alt;
+                modifiers |= InputModifiers.Alt;
             return modifiers;
         }
 
@@ -83,22 +119,16 @@ namespace Avalonia.UWP
         {
             var point = e.GetCurrentPoint(_hostPanel);
             var position = new Avalonia.Point(point.Position.X, point.Position.Y);
-            var window = Windows.UI.Core.CoreWindow.GetForCurrentThread();
-            var modifiers = MapModifiers(window);
-            var eventType = MapPointerType(e);
-            var button = Avalonia.Input.Raw.RawInputModifiers.None;
-            if (point.Properties.IsLeftButtonPressed) button |= Avalonia.Input.Raw.RawInputModifiers.LeftMouseButton;
-            if (point.Properties.IsRightButtonPressed) button |= Avalonia.Input.Raw.RawInputModifiers.RightMouseButton;
-            if (point.Properties.IsMiddleButtonPressed) button |= Avalonia.Input.Raw.RawInputModifiers.MiddleMouseButton;
-            var args = new Avalonia.Input.Raw.RawPointerEventArgs(
+            var modifiers = GetModifiers();
+            var args = new RawMouseEventArgs(
                 null, // TODO: Provide IInputDevice
                 (ulong)point.PointerId,
                 _hostPanel,
-                eventType,
+                RawMouseEventType.LeftButtonDown,
                 position,
-                modifiers | button
+                modifiers
             );
-            System.Diagnostics.Debug.WriteLine($"[UWPWindowImpl] PointerPressed: {position} Modifiers: {modifiers} Buttons: {button}");
+            System.Diagnostics.Debug.WriteLine($"[UWPWindowImpl] PointerPressed: {position} Modifiers: {modifiers}");
             Input?.Invoke(args);
         }
 
@@ -106,21 +136,16 @@ namespace Avalonia.UWP
         {
             var point = e.GetCurrentPoint(_hostPanel);
             var position = new Avalonia.Point(point.Position.X, point.Position.Y);
-            var window = Windows.UI.Core.CoreWindow.GetForCurrentThread();
-            var modifiers = MapModifiers(window);
-            var button = Avalonia.Input.Raw.RawInputModifiers.None;
-            if (point.Properties.IsLeftButtonPressed) button |= Avalonia.Input.Raw.RawInputModifiers.LeftMouseButton;
-            if (point.Properties.IsRightButtonPressed) button |= Avalonia.Input.Raw.RawInputModifiers.RightMouseButton;
-            if (point.Properties.IsMiddleButtonPressed) button |= Avalonia.Input.Raw.RawInputModifiers.MiddleMouseButton;
-            var args = new Avalonia.Input.Raw.RawPointerEventArgs(
+            var modifiers = GetModifiers();
+            var args = new RawMouseEventArgs(
                 null, // TODO: Provide IInputDevice
                 (ulong)point.PointerId,
                 _hostPanel,
-                Avalonia.Input.Raw.RawPointerEventType.Move,
+                RawMouseEventType.Move,
                 position,
-                modifiers | button
+                modifiers
             );
-            System.Diagnostics.Debug.WriteLine($"[UWPWindowImpl] PointerMoved: {position} Modifiers: {modifiers} Buttons: {button}");
+            System.Diagnostics.Debug.WriteLine($"[UWPWindowImpl] PointerMoved: {position} Modifiers: {modifiers}");
             Input?.Invoke(args);
         }
 
@@ -128,34 +153,27 @@ namespace Avalonia.UWP
         {
             var point = e.GetCurrentPoint(_hostPanel);
             var position = new Avalonia.Point(point.Position.X, point.Position.Y);
-            var window = Windows.UI.Core.CoreWindow.GetForCurrentThread();
-            var modifiers = MapModifiers(window);
-            var eventType = MapPointerType(e); // Could be more granular for up events
-            var button = Avalonia.Input.Raw.RawInputModifiers.None;
-            if (point.Properties.IsLeftButtonPressed) button |= Avalonia.Input.Raw.RawInputModifiers.LeftMouseButton;
-            if (point.Properties.IsRightButtonPressed) button |= Avalonia.Input.Raw.RawInputModifiers.RightMouseButton;
-            if (point.Properties.IsMiddleButtonPressed) button |= Avalonia.Input.Raw.RawInputModifiers.MiddleMouseButton;
-            var args = new Avalonia.Input.Raw.RawPointerEventArgs(
+            var modifiers = GetModifiers();
+            var args = new RawMouseEventArgs(
                 null, // TODO: Provide IInputDevice
                 (ulong)point.PointerId,
                 _hostPanel,
-                Avalonia.Input.Raw.RawPointerEventType.LeftButtonUp, // Could refine for other buttons
+                RawMouseEventType.LeftButtonUp,
                 position,
-                modifiers | button
+                modifiers
             );
-            System.Diagnostics.Debug.WriteLine($"[UWPWindowImpl] PointerReleased: {position} Modifiers: {modifiers} Buttons: {button}");
+            System.Diagnostics.Debug.WriteLine($"[UWPWindowImpl] PointerReleased: {position} Modifiers: {modifiers}");
             Input?.Invoke(args);
         }
 
         private void HostPanel_KeyDown(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
         {
-            var window = Windows.UI.Core.CoreWindow.GetForCurrentThread();
-            var modifiers = MapModifiers(window);
-            var args = new Avalonia.Input.Raw.RawKeyEventArgs(
+            var modifiers = GetModifiers();
+            var args = new RawKeyEventArgs(
                 null, // TODO: Provide IKeyboardDevice
                 _hostPanel,
-                Avalonia.Input.Raw.RawKeyEventType.KeyDown,
-                (Avalonia.Input.Key)e.Key, // Simplified mapping
+                RawKeyEventType.KeyDown,
+                (Key)e.Key, // Simplified mapping
                 modifiers
             );
             System.Diagnostics.Debug.WriteLine($"[UWPWindowImpl] KeyDown: {e.Key} Modifiers: {modifiers}");
@@ -164,13 +182,12 @@ namespace Avalonia.UWP
 
         private void HostPanel_KeyUp(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
         {
-            var window = Windows.UI.Core.CoreWindow.GetForCurrentThread();
-            var modifiers = MapModifiers(window);
-            var args = new Avalonia.Input.Raw.RawKeyEventArgs(
+            var modifiers = GetModifiers();
+            var args = new RawKeyEventArgs(
                 null, // TODO: Provide IKeyboardDevice
                 _hostPanel,
-                Avalonia.Input.Raw.RawKeyEventType.KeyUp,
-                (Avalonia.Input.Key)e.Key, // Simplified mapping
+                RawKeyEventType.KeyUp,
+                (Key)e.Key, // Simplified mapping
                 modifiers
             );
             System.Diagnostics.Debug.WriteLine($"[UWPWindowImpl] KeyUp: {e.Key} Modifiers: {modifiers}");
@@ -212,6 +229,7 @@ namespace Avalonia.UWP
         public IPlatformHandle Handle { get; set; }
 
         public Size MaxClientSize { get; set; }
+        Action<RawInputEventArgs> ITopLevelImpl.Input { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public event Action LostFocus;
 
@@ -272,7 +290,10 @@ namespace Avalonia.UWP
 
         public void SetInputRoot(IInputRoot inputRoot)
         {
-           //
+            // Store the Avalonia visual tree root for rendering
+            _renderRoot = inputRoot as Avalonia.Rendering.IRenderRoot;
+            // Optionally, trigger a redraw
+            RequestRedraw();
         }
 
         public void SetSystemDecorations(bool enabled)

@@ -104,6 +104,7 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Avalonia\UWP\Avalonia\Point.cs" />
     <Compile Include="ClipboardImpl.cs" />
     <Compile Include="CursorFactoryImpl.cs" />
     <Compile Include="KeyboardDeviceImpl.cs" />
@@ -121,11 +122,14 @@
     <EmbeddedResource Include="Properties\Avalonia.UWP.rd.xml" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
+      <Version>6.2.8</Version>
+    </PackageReference>
     <PackageReference Include="Avalonia">
       <Version>0.5.1</Version>
     </PackageReference>
-    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>6.2.12</Version>
+    <PackageReference Include="SkiaSharp">
+      <Version>2.88.9</Version>
     </PackageReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

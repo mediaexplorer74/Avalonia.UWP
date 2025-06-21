@@ -151,8 +151,8 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>6.2.14</Version>
-    </PackageReference>
+      <Version>6.0.8</Version>
+    </PackageReference>    
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Avalonia.UWP\AvaloniaUWPLib.csproj">

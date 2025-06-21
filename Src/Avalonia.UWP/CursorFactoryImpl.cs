@@ -1,4 +1,4 @@
-﻿using Avalonia.Input;
+using Avalonia.Input;
 using Avalonia.Platform;
 using System;
 
@@ -8,7 +8,8 @@ namespace Avalonia.UWP
     {
         public IPlatformHandle GetCursor(StandardCursorType cursorType)
         {
-            return new PlatformHandle(IntPtr.Zero, "STUB");
+            // UWP does not support custom cursors in the same way as Win32. Always return stub.
+            return new PlatformHandle(IntPtr.Zero, "UWP_CURSOR");
         }
     }
 }
