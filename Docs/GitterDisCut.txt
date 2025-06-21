@@ -1,0 +1,232 @@
+Nikita Tsukanov @kekekeks sept. 28 2017 14:27
+https://github.com/AvaloniaUI/Avalonia/blob/master/src/Avalonia.Controls/Carousel.cs
+https://github.com/AvaloniaUI/Avalonia/blob/master/src/Avalonia.Themes.Default/Carousel.xaml
+Only 117 LOC
+Neil McAlister @pingzing sept. 28 2017 14:27
+Hm. Maybe I'll see what I can throw together...
+Nikita Tsukanov @kekekeks sept. 28 2017 14:27
+CarouselPresenter can be reused as is
+Since it only operates with Items collection and selected indices
+And Items can act as navigation stack
+Or may be just reuse Carousel itself
+https://github.com/AvaloniaUI/Avalonia/blob/master/src/Avalonia.Themes.Default/TabControl.xaml#L13
+It's used in TabControl, so it should be possible to customize behavior
+yep, it seems that Carousel was meant to be used like that
+Neil McAlister @pingzing sept. 28 2017 14:31
+Yeah, I could definitely see just wrapping up Carousel in a lightweight bit of custom code doing what I'm asking about
+Jurjen Biewenga @JurjenBiewenga sept. 28 2017 16:27
+Can't seem to figure out what is consuming the KeyDown in dropdown when it's open
+Jurjen Biewenga @JurjenBiewenga sept. 28 2017 16:55
+@grokys Can't seem to figure out why the arrow keys don't work when the dropdown is open, however I've pr'd the changes while the dropdown is closed
+Jurjen Biewenga @JurjenBiewenga sept. 28 2017 17:55
+Maybe an idea to sign the project up for this? https://hacktoberfest.digitalocean.com/#details
+Nikita Tsukanov @kekekeks sept. 28 2017 17:58
+Apply the label ”Hacktoberfest” to issues in your GitHub project that are ready for new contributors to work on.
+Jurjen Biewenga @JurjenBiewenga sept. 28 2017 18:00
+Yeah nothing special to participate and maybe an easy way to get some more exposure
+Nikita Tsukanov @kekekeks sept. 28 2017 22:07
+@JurjenBiewenga
+  <circle
+     class="cls-1"
+     cx="115.44"
+     cy="115.44"
+     r="85.44"
+     id="circle9"
+     style="stroke:url(#linearGradient4151)" />
+  <rect
+     class="cls-2"
+     x="170.87"
+     y="113.93"
+     width="59.99"
+     height="116.2"
+     id="rect11" />
+  <circle
+     class="cls-3"
+     cx="12.55"
+     cy="217.62"
+     r="12.52"
+     id="circle13" />
+That's SVG contents of the logo
+I'm sure you can't use it as a path
+Since it is not one
+Jurjen Biewenga @JurjenBiewenga sept. 28 2017 22:08
+Awh, that's too bad
+wanted to use that as testcase
+Dan Walmsley @danwalmsley sept. 28 2017 22:41
+There are svg to XAML converters available
+Nikita Tsukanov @kekekeks sept. 28 2017 22:54
+  <Canvas Width="230.87" Height="230.87">
+    <Canvas.Resources>
+      <LinearGradientBrush x:Key="fill-3" MappingMode="RelativeToBoundingBox" StartPoint="0,0" EndPoint="1,1">
+        <LinearGradientBrush.GradientStops>
+          <GradientStopCollection>
+            <GradientStop Color="#FF623079" Offset="0"/>
+            <GradientStop Color="#FF8B44AC" Offset="0.7"/>
+          </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+      </LinearGradientBrush>
+      <LinearGradientBrush x:Key="linearGradient4151" MappingMode="Absolute" StartPoint="34,197" EndPoint="197,34">
+        <LinearGradientBrush.GradientStops>
+          <GradientStopCollection>
+            <GradientStop Color="#FF623079" Offset="0"/>
+            <GradientStop Color="#FF8B44AC" Offset="0.7"/>
+          </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+      </LinearGradientBrush>
+    </Canvas.Resources>
+    <Ellipse Canvas.Left="30" Canvas.Top="30" Width="170.9" Height="170.9" Name="circle9" Fill="#000000" Stroke="{StaticResource linearGradient4151}"/>
+    <Rectangle xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Canvas.Left="170.87" Canvas.Top="113.93" Width="59.99" Height="116.2" Name="rect11" Fill="#000000"/>
+    <Ellipse Canvas.Left="0" Canvas.Top="205.1" Width="25" Height="25" Name="circle13" Fill="#000000"/>
+  </Canvas>
+I'm putting this on Canvas page
+Jurjen Biewenga @JurjenBiewenga sept. 28 2017 22:58
+Is AppBuilder suppsoed to be sealed?
+Nikita Tsukanov @kekekeks sept. 28 2017 22:59
+Yes
+Jurjen Biewenga @JurjenBiewenga sept. 28 2017 23:01
+Wait, sealed doesn't hide it like internal
+Why can't I find it then Hmm
+Nikita Tsukanov @kekekeks sept. 28 2017 23:05
+It's not available from netstandard
+for reasons
+If you want to consume AppBuilder instance from netstandard, you need to declare your method like
+public static T UseSomething<T>(this T builder) where T : AppBuilderBase<T>, new()
+{
+      return builder;
+}
+Jurjen Biewenga @JurjenBiewenga sept. 28 2017 23:11
+The .net core sample doesn't do that though
+That's on netstandard as well right?
+Nikita Tsukanov @kekekeks sept. 28 2017 23:12
+If you are targeting netcoreapp2.0 or net461 AppBuilder is available
+If you are targeting netstandard2.0 it is not
+Nikita Tsukanov @kekekeks sept. 28 2017 23:21
+Guys...
+https://i.imgur.com/0qf9wuQ.png
+Jurjen Biewenga @JurjenBiewenga sept. 28 2017 23:22
+Why the dot?
+Nikita Tsukanov @kekekeks sept. 28 2017 23:22
+because dot NET
+Johan Larsson @JohanLarsson sept. 28 2017 23:22
+looks nice
+Nikita Tsukanov @kekekeks sept. 28 2017 23:23
+It's the new logo variant by @Worldbeater
+Jurjen Biewenga @JurjenBiewenga sept. 28 2017 23:23
+Lets hope he has an svg
+That looks like a 0 quality jpg
+Johan Larsson @JohanLarsson sept. 28 2017 23:24
+one minute in inkskape to trace it if not
+Jurjen Biewenga @JurjenBiewenga sept. 28 2017 23:24
+True
+Nikita Tsukanov @kekekeks sept. 28 2017 23:24
+Because it is
+let me upload a proper one
+(gitter uploader is broken for me)
+Nikita Tsukanov @kekekeks sept. 28 2017 23:38
+http://temp.keks-n.net/avalonia_background.svg
+https://i.imgur.com/olBGWu0.png
+http://temp.keks-n.net/avalonia_pure.svg
+Dan Walmsley @danwalmsley sept. 28 2017 23:38
+nice!
+Nikita Tsukanov @kekekeks sept. 28 2017 23:39
+http://temp.keks-n.net/avalonia_mono_background.svg
+http://temp.keks-n.net/avalonia_mono_pure.svg
+("pure" variants actually have that white background)
+https://i.imgur.com/n77HJr2.png
+Jurjen Biewenga @JurjenBiewenga sept. 28 2017 23:47
+Is there a netstandard sample?
+Nikita Tsukanov @kekekeks sept. 28 2017 23:50
+See ControlCatalog project
+It's targeting netstandard2.0
+you can't use AppBuilder from netstandard
+Because AppBuilder is platform-specific
+It's meant to be used only from program's entry point
+And netstandard-targeting assemblies don't have one
+Jurjen Biewenga @JurjenBiewenga sept. 28 2017 23:52
+Oh, I thought it wasn't targeting netstandard
+It can't seem to find the UseGTK and similar
+Nikita Tsukanov @kekekeks sept. 28 2017 23:57
+because netstandard-project shouldn't reference platform-specific stuff
+Platform-detection and initial configuration should live in the entry point, Activity or AppDelegate
+Jurjen Biewenga @JurjenBiewenga sept. 29 2017 00:04
+To be honest, I've got no clue about netstandard
+Nikita Tsukanov @kekekeks sept. 29 2017 00:08
+It's meant to be a target framework for libraries
+that want to be xplat-ready
+http://temp.keks-n.net/avalonia_pure.png
+We've figured out the logo variant for white background
+Jurjen Biewenga @JurjenBiewenga sept. 29 2017 00:09
+Why keep the shadow on a white background?
+Should either be more pronounced or gone
+Nikita Tsukanov @kekekeks sept. 29 2017 00:11
+It's more lightweight that way
+And yet distinguishable from the background
+Neil McAlister @pingzing sept. 29 2017 00:26
+Experimenting with a theoretical UWP target for Avalonia, and have some thoughts:
+UWP-till-now only supports NETStandard 1.4. The update coming out in October will bump it up to 2.0, but it'll be some time before it rolls out to users at large. Is it worth restricting core components to 1.4 for some time just for that?
+The iOS and Android backends are hosted on an AppDelegate and a MainActivity, respectively. The UWP equivalent to this would be an Application. However, we also have the option to be hosted on top of a CoreWindow which is, I think, the lowest we can get. Any thoughts on which might be preferable?
+Nikita Tsukanov @kekekeks sept. 29 2017 00:29
+iOS backend is being hosted inside UIView, actually
+For Android it's view
+Our UIWindow and Activity implementations are just wrappers
+https://github.com/AvaloniaUI/Avalonia/blob/master/src/Android/Avalonia.Android/AvaloniaActivity.cs
+Jeremy Koritzinsky @jkoritzinsky sept. 29 2017 00:31
+We would want to use CoreWindow as the backing for the window implementations themselves. We'd also cross-compile Avalonia.Direct2D1 to have some specific code for UWP since we can create a swap chain for a CoreWindow really easily
+Nikita Tsukanov @kekekeks sept. 29 2017 00:35
+@grokys Portable.Xaml doesn't recognize a property as a collection if it's declared type doesn't have Add method
+Neil McAlister @pingzing sept. 29 2017 00:35
+ah, so maybe there'd be something like a CoreWindowRenderTarget alongside the existing HwndRenderTarget?
+Nikita Tsukanov @kekekeks sept. 29 2017 00:37
+@jkoritzinsky Why couldn't we implement something along the lines of my WPF integration?
+So Avalonia controls could be actually embedded inside native UWP views
+It works like that for iOS and Android, I don't see why it shouldn't be this way for UWP
+This also allows Xamarin.Forms integration
+Jeremy Koritzinsky @jkoritzinsky sept. 29 2017 00:38
+We could with SwapChainPanel, but at least for D2D integration its more efficient at least to support drawing directly onto a CoreWindow
+We could have a control with SwapChainPanel in its template for embedding but I feel like UWP is really easy to add full integration like Win32 and get more efficiency out of it.
+Nikita Tsukanov @kekekeks sept. 29 2017 00:41
+So we'll have two separate TopLevel implementations
+Mkay, makes sense
+BTW, XForms integration looks somewhat like that (sorry for poor image quality): https://i.imgur.com/5uzIn09.png
+Neil McAlister @pingzing sept. 29 2017 00:47
+I'll likely have a full day tomorrow to hack away at a starting UWP implementation--any tips on where I might start? In my little experiment branch, I've got an Avalonia.UWP project, and it seems like the core of these is supposed to be the <platform name>Platform.cs with its static Initialize method. Is that about right?
+Nikita Tsukanov @kekekeks sept. 29 2017 00:48
+I'd recommed to look at MonoMac implementation, it's the simplest one
+I'd also recommend to have everything as stubs at first
+https://github.com/AvaloniaUI/Avalonia/blob/d7e74229990205b1865586f44c65fb7571ba0d0e/src/Avalonia.DesignerSupport/Remote/Stubs.cs
+Neil McAlister @pingzing sept. 29 2017 00:51
+as in, use those actual stub classes, or just create a bunch of blank classes-that-are-stubs for the platform Impls?
+Nikita Tsukanov @kekekeks sept. 29 2017 00:51
+Only things that are absolutely mandatory to get a new platform running are IPlatformThreadingInterface and ITopLevelImpl (and IWindowImpl on top of it, but most of the methods aren't really neccessary)
+See link above
+You can copy-paste stubs from there
+Neil McAlister @pingzing sept. 29 2017 00:53
+aha, I gotcha
+Nikita Tsukanov @kekekeks sept. 29 2017 00:53
+https://github.com/AvaloniaUI/Avalonia/tree/d7e74229990205b1865586f44c65fb7571ba0d0e/src/Avalonia.DesignerSupport/Remote
+This is pretty much a "minimal" windowing platform that allows things to not crash
+If you are stuck with NETStandard 1.4, you can use packages from nuget and keep your platform implementation in a separate solution
+You can get a standalone version of the ControlCatalog there - https://github.com/kekekeks/avalonia-net-core-example/tree/master/VS2017/src/ControlCatalog
+Neil McAlister @pingzing sept. 29 2017 00:57
+you mean the old nuget packages, from before the 2.0 update? or is there some nuget feature to circumvent not running a high enough NETStandard?
+Nikita Tsukanov @kekekeks sept. 29 2017 00:58
+0.5.1 from nuget.org
+Neil McAlister @pingzing sept. 29 2017 00:58
+:thumbsup: gotcha
+Nikita Tsukanov @kekekeks sept. 29 2017 00:58
+It's not like a lot of things have changed since then
+AvaloniaUI/Avalonia@b3f3c01 - this is what I had to do to update my 0.5.1-based implementation to the recent master
+BTW, is there any way to build UWP-targeted library on win7?
+Nikita Tsukanov @kekekeks sept. 29 2017 01:03
+Nvm, there is development support
+I thought it was like those horrible win8.1 app SDK
+Jeremy Koritzinsky @jkoritzinsky sept. 29 2017 01:34
+@kekekeks any chance we can build a XAML E&C or XAML Live Previewer tool on top of the new designer?
+Nikita Tsukanov @kekekeks sept. 29 2017 01:34
+XAML Live Previewer Tool?
+I'm planning to get a standalone utility that can be used to edit (with completion support) and view XAML in environments like Linux where people lack a proper IDE and have to use atrocities based on Electron
+And a Rider plugin, I think
+Ah, and support for our XAML in AvalonStudio
+And support for .NET Core project in our VS extension
+Those are the main goals of the new previewer
+XAML E&C is completely unrelated beast
