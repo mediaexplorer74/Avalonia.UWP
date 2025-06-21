@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -25,6 +25,24 @@ namespace AvaloniaApp
         public MainPage()
         {
             this.InitializeComponent();
+            // Wire up Avalonia backend with the SwapChainPanel host
+            Avalonia.UWP.WindowingPlatformImpl.HostPanel = this.AvaloniaHost;
+
+            // Create and show a minimal Avalonia window to test the pipeline.
+            var win = new AvaloniaApp.MinimalWindow();
+            win.Show();
+
+            InitializeAvaloniaHost();
+        }
+
+        /// <summary>
+        /// Stub for initializing Avalonia rendering inside the SwapChainPanel.
+        /// </summary>
+        private void InitializeAvaloniaHost()
+        {
+            // TODO: When Avalonia UWP backend is implemented, initialize rendering here.
+            // For example, create a Skia/Direct2D surface and bind it to AvaloniaHost.
+            // This is a placeholder for future Avalonia integration.
         }
     }
 }

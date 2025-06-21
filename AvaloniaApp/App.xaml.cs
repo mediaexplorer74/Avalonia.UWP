@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -28,6 +28,8 @@ namespace AvaloniaApp
         /// </summary>
         public App()
         {
+            // Initialize Avalonia for UWP (proof of concept)
+            Avalonia.UWP.UWPPlatform.Initialize();
             this.InitializeComponent();
             this.Suspending += OnSuspending;
         }

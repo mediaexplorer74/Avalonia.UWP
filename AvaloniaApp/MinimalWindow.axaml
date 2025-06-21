@@ -1,0 +1,9 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="AvaloniaApp.MinimalWindow"
+        Width="400" Height="200" Title="Avalonia Minimal Window">
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+        <TextBlock Text="Hello from Avalonia!" FontSize="24" Margin="0,0,0,16"/>
+        <Button Content="Click Me" Width="100"/>
+    </StackPanel>
+</Window>
